@@ -27,6 +27,20 @@ class ValueObjectsTest {
     }
 
     @Test
+    void telefoneDeveSerNormalizadoParaSomenteDigitos() {
+        Telefone telefone = new Telefone("(11) 99999-9999");
+
+        assertThat(telefone.value()).isEqualTo("11999999999");
+    }
+
+    @Test
+    void telefoneComDezDigitosDeveSerAceito() {
+        Telefone telefone = new Telefone("(11) 3333-4444");
+
+        assertThat(telefone.value()).isEqualTo("1133334444");
+    }
+
+    @Test
     void telefoneNaoPodeSerVazio() {
         assertThatThrownBy(() -> new Telefone(" "))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -34,10 +48,41 @@ class ValueObjectsTest {
     }
 
     @Test
+    void telefoneComQuantidadeInvalidaDeDigitosDeveLancarExcecao() {
+        assertThatThrownBy(() -> new Telefone("119999999"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("10 ou 11");
+        assertThatThrownBy(() -> new Telefone("119999999999"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("10 ou 11");
+    }
+
+    @Test
+    void telefoneComLetrasDeveLancarExcecao() {
+        assertThatThrownBy(() -> new Telefone("11999abc999"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("telefone invalido");
+    }
+
+    @Test
+    void enderecoDeveSerNormalizado() {
+        Endereco endereco = new Endereco("  Rua X, 100  ");
+
+        assertThat(endereco.value()).isEqualTo("Rua X, 100");
+    }
+
+    @Test
     void enderecoNaoPodeSerVazio() {
         assertThatThrownBy(() -> new Endereco(""))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("endereco");
+    }
+
+    @Test
+    void enderecoMuitoLongoDeveLancarExcecao() {
+        assertThatThrownBy(() -> new Endereco("a".repeat(256)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("255");
     }
 
     @Test
@@ -69,6 +114,15 @@ class ValueObjectsTest {
     }
 
     @Test
+    void emailMuitoLongoDeveLancarExcecao() {
+        String emailLongo = "a".repeat(250) + "@test.com";
+
+        assertThatThrownBy(() -> new Email(emailLongo))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("254");
+    }
+
+    @Test
     void emailNaoPodeSerNulo() {
         assertThatThrownBy(() -> new Email(null))
                 .isInstanceOf(NullPointerException.class);
@@ -90,6 +144,13 @@ class ValueObjectsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("cpf invalido");
         assertThatThrownBy(() -> new Cpf("123"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("cpf invalido");
+    }
+
+    @Test
+    void cpfComLetrasDeveLancarExcecao() {
+        assertThatThrownBy(() -> new Cpf("abc52998224725"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("cpf invalido");
     }
