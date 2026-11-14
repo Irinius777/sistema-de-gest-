@@ -60,6 +60,30 @@ src/main/java/br/com/brasmoto/gestao_funcionarios
 - **Erros padronizados**: respostas de erro usam `ProblemDetail` (RFC 7807).
 - **OpenAPI**: contrato documentado com anotações do Springdoc.
 
+### Revisão técnica e refinamentos
+
+Após a implementação inicial, o projeto passou por uma revisão de engenharia com foco em arquitetura, consistência do domínio, contrato HTTP e qualidade dos testes.
+
+| Área | Refinamento |
+|---|---|
+| Arquitetura | DTOs movidos para `application/dto`; o serviço de aplicação não depende mais da camada web. |
+| Domínio | Agregado `Funcionario` imutável; `equals`/`hashCode` por identidade; normalização e validação mais rígidas de CPF, telefone, e-mail, endereço e nome. |
+| Regras de negócio | Unicidade de CPF e e-mail com respostas `409 Conflict`. |
+| API | `POST` retorna `201` com header `Location`; listagem ordenada alfabeticamente. |
+| Erros | `ProblemDetail` padronizado para `400`, `404` e `409`; UUID inválido e rota inexistente tratados sem vazar stacktrace. |
+| OpenAPI | Respostas de erro documentadas, schema de `ProblemDetail`, header `Location` e metadados da API. |
+| Dependências | Springdoc atualizado para a versão 3.2.0, compatível com Spring Boot 4. |
+| Testes | Cobertura ampliada para 86 testes, incluindo integração real, conflitos, validações e concorrência. |
+| Repositório | README, pipeline de CI, `.gitattributes`, `.gitignore` e `mvnw` executável. |
+
+Validação final:
+
+- `./mvnw verify` com build bem-sucedido.
+- 86 testes passando.
+- Pipeline de CI verde no GitHub Actions.
+- Swagger UI e OpenAPI funcionando no profile padrão.
+- Profile `prod` desabilita Swagger/OpenAPI sem afetar a API.
+
 ## Como executar
 
 Pré-requisitos: **Java 17 ou superior** e `JAVA_HOME` apontando para o JDK.
