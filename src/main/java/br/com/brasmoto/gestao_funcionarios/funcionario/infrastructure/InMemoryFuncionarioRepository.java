@@ -1,5 +1,7 @@
 package br.com.brasmoto.gestao_funcionarios.funcionario.infrastructure;
 
+import br.com.brasmoto.gestao_funcionarios.funcionario.domain.Cpf;
+import br.com.brasmoto.gestao_funcionarios.funcionario.domain.Email;
 import br.com.brasmoto.gestao_funcionarios.funcionario.domain.Funcionario;
 import br.com.brasmoto.gestao_funcionarios.funcionario.domain.FuncionarioId;
 import br.com.brasmoto.gestao_funcionarios.funcionario.domain.FuncionarioRepository;
@@ -28,6 +30,20 @@ public class InMemoryFuncionarioRepository implements FuncionarioRepository {
     }
 
     @Override
+    public Optional<Funcionario> buscarPorCpf(Cpf cpf) {
+        return store.values().stream()
+                .filter(funcionario -> funcionario.getCpf().equals(cpf))
+                .findFirst();
+    }
+
+    @Override
+    public Optional<Funcionario> buscarPorEmail(Email email) {
+        return store.values().stream()
+                .filter(funcionario -> funcionario.getEmail().equals(email))
+                .findFirst();
+    }
+
+    @Override
     public List<Funcionario> listarTodos() {
         return new ArrayList<>(store.values());
     }
@@ -35,10 +51,5 @@ public class InMemoryFuncionarioRepository implements FuncionarioRepository {
     @Override
     public boolean remover(FuncionarioId id) {
         return store.remove(id) != null;
-    }
-
-    @Override
-    public boolean existe(FuncionarioId id) {
-        return store.containsKey(id);
     }
 }

@@ -1,7 +1,7 @@
 package br.com.brasmoto.gestao_funcionarios.funcionario.application.service;
 
-import br.com.brasmoto.gestao_funcionarios.funcionario.application.api.FuncionarioRequest;
-import br.com.brasmoto.gestao_funcionarios.funcionario.application.api.FuncionarioResponse;
+import br.com.brasmoto.gestao_funcionarios.funcionario.application.dto.FuncionarioRequest;
+import br.com.brasmoto.gestao_funcionarios.funcionario.application.dto.FuncionarioResponse;
 
 import java.util.List;
 import java.util.UUID;

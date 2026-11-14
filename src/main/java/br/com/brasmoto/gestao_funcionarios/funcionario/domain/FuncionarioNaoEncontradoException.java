@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public class FuncionarioNaoEncontradoException extends RuntimeException {
     public FuncionarioNaoEncontradoException(UUID id) {
-        super("Funcionario não encontrado: " + id);
+        super("Funcionario nao encontrado: " + id);
     }
 }
