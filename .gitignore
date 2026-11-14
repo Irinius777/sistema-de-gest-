@@ -4,12 +4,25 @@ target/
 
 # IDE
 .idea/
+.vscode/
 *.iml
 *.ipr
 *.iws
+.classpath
+.project
+.settings/
+
+# Compiled
+*.class
 
 # Logs
 *.log
+hs_err_pid*
+replay_pid*
+
+# Environment
+.env
+.env.*
 
 # OS
 .DS_Store
